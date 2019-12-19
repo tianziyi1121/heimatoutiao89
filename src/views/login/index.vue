@@ -74,13 +74,13 @@ export default {
 .login {
   background-image: url("../../assets/img/login_bg.jpg");
   height: 100vh;
-  background-size: cover; //自适应北京图片
+  background-size: cover; //自适应背景图片
   display: flex;
-  // justify-content: center;
-  // align-items:center
+  justify-content: center;
+  align-items:center;
 
   .box-card {
-    margin: auto;
+    // margin: auto;
     width: 440px;
     height: 350px;
   }
