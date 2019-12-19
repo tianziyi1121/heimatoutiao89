@@ -64,6 +64,7 @@ export default {
     submitLogin () {
       this.$refs.myForm.validate(function (isOK) {
         // 前端校验成功
+        this.$http.post('/')
       })
     }
   }
