@@ -62,9 +62,28 @@ export default {
   },
   methods: {
     submitLogin () {
-      this.$refs.myForm.validate(function (isOK) {
+      this.$refs.myForm.validate((isOK) => {
         // 前端校验成功
-        this.$http.post('/')
+        // 这种写法里面又俩种参数，get类型（查询参数） 参数放在 params对象 中
+        // post 类型（body参数）参数放在 data对象里
+        this.$axios({
+          url: 'authorizations', // 请求地址
+          method: 'post', // 请求类型
+          data: this.loginForm
+        }).then(result => {
+          // 成功之后进入到then 然后在前端保存令牌
+          window.localStorage.setItem('user-token', result.data.data.token) // 前端缓存令牌
+          this.$router.push('/') // 登录成功 跳转到主页
+        }).catch(() => {
+          // 如果登录失败提醒用户手机号或验证码错误
+          // $message是element ui的方法 和vue没有关系
+          this.$message({
+            message: '你的手机号或者验证码不正确',
+            type: 'warning'
+          })
+        }
+
+        )
       })
     }
   }
