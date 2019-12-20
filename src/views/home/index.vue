@@ -20,12 +20,13 @@
 </template>
 
 <script>
-import layoutAside from '../../components/home/laylout-aside' // 引入侧边栏
-import layloutHeader from '../../components/home/layout-header'// 引入右侧头部
+// import layoutAside from '../../components/home/laylout-aside' // 引入侧边栏
+// import layloutHeader from '../../components/home/layout-header'// 引入右侧头部
 export default {
   components: {
-    'layout-aside': layoutAside, // layout-aside 是上面的标签
-    'layout-header': layloutHeader
+    // 'layout-aside': layoutAside, // layout-aside 是上面的标签
+    // 'layout-header': layloutHeader
+    // 注释的这四行 是因为进行了全局注册 所以不上交
   }
 }
 </script>
