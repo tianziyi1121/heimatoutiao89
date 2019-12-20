@@ -8,17 +8,24 @@
     </el-aside>
     <!-- 右侧 -->
     <el-container>
-      <el-header>头部</el-header>
-      <el-main>主要区域</el-main>
+      <el-header>
+        <layout-header></layout-header>
+      </el-header>
+      <el-main>
+        <!-- 二级路由容器 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import layoutAside from '../../components/home/laylout-aside' // 引入
+import layoutAside from '../../components/home/laylout-aside' // 引入侧边栏
+import layloutHeader from '../../components/home/layout-header'// 引入右侧头部
 export default {
   components: {
-    'layout-aside': layoutAside
+    'layout-aside': layoutAside, // layout-aside 是上面的标签
+    'layout-header': layloutHeader
   }
 }
 </script>
