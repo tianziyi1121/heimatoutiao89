@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       userInfo: {}, // 用户信息
-      defaultImg: require('../../assets/img/01.jpg')
+      defaultImg: require('../assets/img/01.jpg')
     }
   },
   created () {

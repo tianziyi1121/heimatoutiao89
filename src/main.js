@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/index.js'
 import ElementUI from 'element-ui' // 引入包
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import './styles/index.less' // 引入初始化样式
 import axios from 'axios' //  引入axios
-import Component from '../src/components/index' // 引入组件对象
+import Component from './components/index.js' // 引入组件对象
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios // 赋值给全局对象

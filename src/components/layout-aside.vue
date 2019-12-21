@@ -1,7 +1,7 @@
 <template>
   <div class="layout-aside">
     <div class="title">
-      <img src="../../assets/img/logo_admin.png" alt />
+      <img src="../assets/img/logo_admin.png" alt />
     </div>
     <!-- 导航组件 :router="true"完整写法 简写 router>开启路由-->
     <el-menu
@@ -40,10 +40,12 @@ export default {}
 
 <style lang="less" scoped>
 .layout-aside {
+  overflow: hidden;
   .title {
     text-align: center;
     background-color: #2e2f32;
     padding: 10px 0;
+    width: 231px;
     img {
       height: 35px;
     }

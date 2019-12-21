@@ -8,7 +8,7 @@ export default {}
 </script>
 
 <style lang="less" scoped>
-.hoem{
+.home{
     background-image: url('../../assets/img/01.jpg');
     height: 100vh;
     background-size: cover;
