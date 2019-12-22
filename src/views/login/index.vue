@@ -72,15 +72,15 @@ export default {
           data: this.loginForm
         }).then(result => {
           // 成功之后进入到then 然后在前端保存令牌
-          window.localStorage.setItem('user-token', result.data.data.token) // 前端缓存令牌
+          window.localStorage.setItem('user-token', result.data.token) // 前端缓存令牌
           this.$router.push('/') // 登录成功 跳转到主页
-        }).catch(() => {
-          // 如果登录失败提醒用户手机号或验证码错误
-          // $message是element ui的方法 和vue没有关系
-          this.$message({
-            message: '你的手机号或者验证码不正确',
-            type: 'warning'
-          })
+        // })//.catch(() => {
+        //   // 如果登录失败提醒用户手机号或验证码错误
+        //   // $message是element ui的方法 和vue没有关系
+        //   this.$message({
+        //     message: '你的手机号或者验证码不正确',
+        //     type: 'warning'
+        //   })
         }
 
         )
