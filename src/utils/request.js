@@ -28,7 +28,7 @@ axios.interceptors.response.use((response) => {
       message = '请求参数错误'
       break
     case 403:
-      window.localStorage.removeItem('user-token')
+      window.localStorage.removeItem('user-token')// 删除token
       // 因为都是同样的原因,但是是不同的状态码,所以我们需要俩个判断条件,先判断是否是相同的地址,在看请求的状态码
       router.push('/login')// resfehtoken 过期,用来换取token
       break
@@ -39,7 +39,7 @@ axios.interceptors.response.use((response) => {
       message = '手机号不正确'
       break
     case 401:
-      window.localStorage.removeItem('user-token')
+      window.localStorage.removeItem('user-token') // 因为令牌过期了 所以要强制删除token
       router.push('/login')// token过期
       break
     default:
