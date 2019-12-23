@@ -2,6 +2,7 @@
 import axios from 'axios' // 先引入axios包
 import router from '../router' // 引入路由实例对象 为了下面跳转页面
 import { Message } from 'element-ui' // 引入这个包 为了下面错误的提示信息时使用里面的东西
+import JSONBig from 'json-bigint' // 引入第三方包 为了解决大数据的问题
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 赋值黑马头条的默认地址
 // 发送axiso请求 在未到服务器之前 做一些业务处理  请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -13,6 +14,11 @@ axios.interceptors.request.use(function (config) {
   // 执行请求失败
 
 })
+//
+// 后台数据到达 响应拦截器之前 执行的一个函数
+axios.defaults.transformResponse = [function (data) {
+  return JSONBig.parse(data) // jsonbig.parse 替换 json.parse  保证数据的正确
+}]
 
 // 响应拦截
 axios.interceptors.response.use((response) => {
@@ -46,6 +52,10 @@ axios.interceptors.response.use((response) => {
       break
   }
   Message({ type: 'warning', message })// 提示消息
+
+  // 状态码提示
+  // 想让错误拦截器的内容继续进入到以后的catch中 而不进入then  必须return
+  return Promise.reject(error)
 })
 
 export default axios
