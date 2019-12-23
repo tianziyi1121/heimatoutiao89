@@ -1,6 +1,6 @@
 <template>
   <!-- 卡片组件 -->
-  <el-card>
+  <el-card v-loading="loading">
     <!-- 面包屑给了卡片的具名插槽 -->
     <bread-crumb slot="header">
       <!-- 插槽内容 -->
@@ -17,10 +17,20 @@
         <template slot-scope="obj">
           <!-- {{obj.row.comment_status}}  放组件 作用域插槽 -->
           <el-button type="text" size="small">修改</el-button>
-          <el-button type="text" size="small" @click="openOrClose(obj.row)">{{obj.row.comment_status ?'关闭评论':'打开评论'}}</el-button>
+          <!-- //注册事件 -->
+          <el-button
+            type="text"
+            size="small"
+            @click="openOrClose(obj.row)"
+          >{{obj.row.comment_status ?'关闭评论':'打开评论'}}</el-button>
         </template>
-      </el-table-column>childen
+      </el-table-column>
     </el-table>
+    <!-- <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination> -->
+    <!-- 分页组件 -->
+    <el-row type="flex" justify="center" align="middle" style="height:80px">
+      <el-pagination @current-change="changePage" background layout="prev,pager,next" :current-page="page.currentPage" :page-size="page.pageSize" :total="page.total"></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -29,19 +39,35 @@
 export default {
   data () {
     return {
-      list: []
+      loading: false, // 加载状态 默认关闭
+      list: [],
+      page: {
+        // 专门放置分页数据
+        total: 0, // 数据总条数
+        pageSize: 10, // 默认每页10条
+        currentPage: 1 // 默认当前页码 为第一页
+      }
     }
   },
   methods: {
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getComment()
+    },
     //   请求评论列表数据
     getComment () {
+      this.loading = true // 打开状态
       // $axios默认 就是get请求 query 查询参数也叫get参数 也叫url参数 也叫地址参数 其实都是拼接在地址后面的参数
       // body 参数给data 身份信息给headers  因为之前写作hesaders 所以不用写
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results // 获取评论列表数据给本身的data
+        this.page.total = result.data.total_count // 将获取到的总条数返给上面的分页的total
+        setTimeout(() => {
+          this.loading = false
+        }, 100)// 在加载完成后关闭
       })
     },
     formatterBool (row, column, cellVaule, idnex) {
