@@ -24,6 +24,9 @@ const routes = [
       path: 'comment', // 相对地址
       // component: () => import('../views/comment/index.vue')// 按需加载
       component: Commont
+    }, {
+      path: 'material', // 素材列表管理
+      component: () => import('../views/material/index.vue')// 按需加载
     }]
 
   },
