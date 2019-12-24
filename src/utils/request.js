@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
 //
 // 后台数据到达 响应拦截器之前 执行的一个函数
 axios.defaults.transformResponse = [function (data) {
-  return JSONBig.parse(data) // jsonbig.parse 替换 json.parse  保证数据的正确
+  return data ? JSONBig.parse(data) : {} // jsonbig.parse 替换 json.parse  保证数据的正确
 }]
 
 // 响应拦截

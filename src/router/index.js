@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
 import Home2 from '../views/home/home'
-import Commont from '../views/comment/index.vue'
+// import Commont from '../views/comment/index.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,12 +22,18 @@ const routes = [
       // 二级路由表
       // path: '../views/comment', // 完整地址
       path: 'comment', // 相对地址
-      // component: () => import('../views/comment/index.vue')// 按需加载
-      component: Commont
+      component: () => import('../views/comment/index.vue')// 按需加载
+      // component: Commont
     }, {
       path: 'material', // 素材列表管理
       component: () => import('../views/material/index.vue')// 按需加载
-    }]
+    },
+    {
+      path: 'articles', // 相对地址
+      component: () => import('../views/articles/index.vue')// 按需加载
+      // component: Commont
+    }
+    ]
 
   },
   {
