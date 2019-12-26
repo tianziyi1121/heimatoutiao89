@@ -32,6 +32,11 @@ const routes = [
       path: 'articles', // 相对地址
       component: () => import('../views/articles/index.vue')// 按需加载
       // component: Commont
+    },
+    {
+      path: 'publish', // 相对地址
+      component: () => import('../views/publish/index.vue')// 按需加载
+      // component: Commont
     }
     ]
 
