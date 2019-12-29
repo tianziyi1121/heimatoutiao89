@@ -28,11 +28,13 @@
 </template>
 
 <script>
+// import eventBus from '../../utils/eventBus' // 引入公共实例++++++
+
 export default {
   data () {
     return {
       userInfo: {}, // 用户信息
-      defaultImg: require('../assets/img/01.jpg')
+      defaultImg: require('../../assets/img/01.jpg') // 先把地址转换成变量
     }
   },
   created () {
@@ -82,4 +84,6 @@ export default {
     }
   }
 }
+
+// ++++++++++++
 </style>

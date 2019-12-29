@@ -7,13 +7,14 @@ import Home2 from '../views/home/home'
 Vue.use(VueRouter)
 
 const routes = [
-  {
+  {// 强制跳转
     path: '/',
     redirect: '/home'
   },
   {
     // 主页
     path: '/home',
+    name: 'hoem',
     component: Home,
     children: [{
       path: '', // 二级路由，什么都不写，作为显示组件
@@ -34,10 +35,20 @@ const routes = [
       // component: Commont
     },
     {
-      path: 'publish', // 相对地址
+      path: 'publish/:articleId', // 相对地址   //此规则只匹配修改文章
+      component: () => import('../views/publish/index.vue')// 按需加载
+      // component: Commont
+    },
+    {
+      path: 'publish', // 相对地址   //此规则只匹配新增发布文章
       component: () => import('../views/publish/index.vue')// 按需加载
       // component: Commont
     }
+      //   {
+      //     path: 'account', // 账户信息
+      //     component: () => import('../views/account') // 按需加载
+      //   }]
+      // }+++++++
     ]
 
   },

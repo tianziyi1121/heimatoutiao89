@@ -1,5 +1,5 @@
-import LayoutAside from '../components/layout-aside.vue'
-import LayoutHeader from '../components/layout-header.vue'
+import LayoutAside from '../components/home/layout-aside.vue'
+import LayoutHeader from '../components/home/layout-header.vue'
 import BreadCrumb from '../components/common/bread-crumb.vue'
 
 export default {
@@ -9,3 +9,5 @@ export default {
     Vue.component('bread-crumb', BreadCrumb)// 全局注册一个面包屑组件
   }
 }
+
+// ++++++++++

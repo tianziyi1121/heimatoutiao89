@@ -13,6 +13,7 @@
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item prop="code">
+            <!-- 表单域 -->
           <el-input v-model="loginForm.code" style="width:65%" placeholder="请输入验证码"></el-input>
           <el-button   plain style="float:right" >发送验证码</el-button>
         </el-form-item>
@@ -29,6 +30,7 @@
 
 <script>
 export default {
+  // 第一步 在data中定义表单数据对象
   data () {
     return {
       loginForm: {

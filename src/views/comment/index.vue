@@ -70,6 +70,7 @@ export default {
         }, 100)// 在加载完成后关闭
       })
     },
+    // 定义一个布尔值转化方法
     formatterBool (row, column, cellVaule, idnex) {
       // row 当前行数据
       // column 当前列属性

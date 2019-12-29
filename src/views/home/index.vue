@@ -8,10 +8,12 @@
     </el-aside>
     <!-- 右侧 -->
     <el-container>
+       <!-- 上下布局 -->
       <el-header>
-
+        <!-- 头部组件 -->
         <layout-header></layout-header>
       </el-header>
+      <!-- 主要区域 -->
       <el-main style="padding:0">
         <!-- 二级路由容器 -->
         <router-view></router-view>

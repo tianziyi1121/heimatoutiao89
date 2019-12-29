@@ -1,16 +1,11 @@
 <template>
   <div class="layout-aside">
     <div class="title">
-      <img src="../assets/img/logo_admin.png" alt />
+      <img src="../../assets/img/logo_admin.png" alt />
+        <!-- 导航组件 :router="true"完整写法 简写 router>开启路由-->
     </div>
-    <!-- 导航组件 :router="true"完整写法 简写 router>开启路由-->
-    <el-menu
-      router
-      style="width:231px;"
-      background-color="#353b4e"
-      text-color="#adafb5"
-      active-text-color="#ffd04b"
-    >
+
+    <el-menu router style="width:231px;" background-color="#353b4e" text-color="#adafb5" active-text-color="#ffd04b">
     <!-- 导航组件 index作为跳转的地址 类似于 router-link to -->
       <el-menu-item index="/home">首页</el-menu-item>
       <!-- 二级导航 -->
@@ -29,7 +24,9 @@
         <el-menu-item index="/home/fanslife">粉丝列表</el-menu-item>
         <el-menu-item index="/home/fanslist">粉丝概况</el-menu-item>
       </el-submenu>
-      <el-menu-item>账户信息</el-menu-item>
+       <el-menu-item index="/home/account">
+          账户信息
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

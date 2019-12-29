@@ -11,7 +11,14 @@
       <el-col :span="18">
         <!-- 单选框组 -->
         <!-- <el-radio-group @change="changeCondition" v-model="formData.status"> -->
-        <el-radio-group @change="changeCondition" v-model="formData.status">
+        <!-- <el-radio-group @change="changeCondition" v-model="formData.status"> -->
+        <!--
+              0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部
+        -->
+        <!-- 单选框组 -->
+        <!-- 第一种方式用  @change="changeCondition" 第二种方式 用watch-->
+        <el-radio-group v-model="formData.status">
+          <!-- 全部这个5是默认的,在传参的时候判断一下 是不是5 如果是5 就传个null -->
           <el-radio :label="5">全部</el-radio>
           <el-radio :label="0">草稿</el-radio>
           <el-radio :label="1">待审核</el-radio>
@@ -26,7 +33,8 @@
       </el-col>
       <el-col :span="18">
         <!-- 循环生成多个el-option  label指的是 el-option的显示值 value指的是 el-option的存储值 -->
-        <el-select @change="changeCondition" v-model="formData.channel_id">
+        <el-select v-model="formData.channel_id">
+            <!-- @change="changeCondition" -->
           <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-col>
@@ -36,6 +44,7 @@
         <span>时间选择</span>
       </el-col>
       <el-col :span="18">
+         <!-- 第一种方式用  @change="changeCondition" 第二种方式 用watch +++++++++-->
         <el-date-picker
           @change="changeCondition"
           value-format="yyyy-MM-dd"
@@ -74,7 +83,7 @@
       <!-- 右侧 -->
       <el-col :span="6">
         <el-row class="right" type="flex" justify="end">
-          <span>
+          <span @click="toModify(item.id)">
             <i class="el-icon-edit"></i>修改
           </span>
           <span @click="delArticle(item.id)">
@@ -86,23 +95,29 @@
     <!-- 分页组件 -->
     <el-row type="flex" justify="center" align="middle" style="height:60px">
       <el-pagination
-        @current-change="changePage"
         background
         layout="prev,pager,next"
         :total="page.total"
         :page-size="page.pageSize"
         :current-page="page.currentPage"
+        @current-change='changePage'
       ></el-pagination>
+       <!-- @current-change="changePage" -->
     </el-row>
   </el-card>
 </template>
 
 <script>
+/****
+ * created by  gaoly 2019-11-23
+ * modify  by  zhangsan 2019-12-23
+ * *******/
+// import { watch } from 'fs'
 export default {
   data () {
     return {
       formData: {
-        status: 5,
+        status: 5, // 状态
         channel_id: null, // 默认是空
         dateRange: [] // 初始长度默认为一个空数组 所以在组合条件的时候需要先判断一下 是否为空 若不判断之间传会报错
       },
@@ -116,6 +131,15 @@ export default {
       }
     }
   },
+  // watch: {   ++++++++++
+  //   formData: {
+  //     handler () {
+  //       // this指向组件实例 // 触发该函数时 数据已经是最新的了
+  //       this.changeCondition()
+  //     },
+  //     deep: true // 深度检测
+  //   }
+  // },
   // 处理显示状态
   filters: {
     filterStatus (value) {
@@ -153,24 +177,42 @@ export default {
       }
     }
   },
-  // filtersType (value) {
-  //   // value是过滤器前面表达式计算得到的值
-  //   // 文章状态 0 草稿 1 待审核 2 审核通过 3审核失败 4 已删除
-  //   switch (value) {
-  //     case 0:
-  //       return 'warning'
-  //     case 1:
-  //       return 'info'
-  //     case 2:
-  //       return ''
-  //     case 3:
-  //       return 'danger'
-
-  //     default:
-  //       break
+  // watch: {
+  //   $router: function (to, from) {
+  //     // watch里面this指向组件实例
+  //     if (Object.keys(to.params).length) {
+  //       // 有参数就修改
+  //       // 没有参数就发布
+  //       this.formData = {
+  //         title: '', // 标题
+  //         content: '', // 文章内容
+  //         cover: {
+  //           type: 0, // 封面类型 -1 自动 0无图 1一张 3 三张
+  //           images: [] // 存储图片地址
+  //         }
+  //       }
+  //     }
   //   }
   // },
+  //
+  watch: {
+    formData: {
+      handler () {
+        // this指向组件实例 // 触发该函数时 数据已经是最新的了
+        this.changeCondition()
+      },
+      deep: true // 深度检测
+    }
+  },
   methods: {
+    changeaType () {},
+    // 修改文章
+    toModify (id) {
+      this.$router.push(`/home/publish/${id.toString()}`) // 到发布页面
+    },
+    // toModify (id) {
+    //   this.$router.push(`/home/publish/${id.toString()}`)
+    // },
     // 删除文章
     delArticle (id) {
       // 已发布的文章不能删除 只有草稿可以删除
@@ -217,14 +259,18 @@ export default {
       this.page.currentPage = 1 // 强制将当前页码回到第一页
       this.getConditionArticles()
     },
-    getConditionArticles () { // 该方法里面既有分页数据 也有条件数据
+    getConditionArticles () {
+      // 该方法里面既有分页数据 也有条件数据
       let params = {
         page: this.page.currentPage, // 分页信息
         per_page: this.page.pageSize, // 分页信息
         status: this.formData.status === 5 ? null : this.formData.status, // 不传为全部 5代表全部
         channel_id: this.formData.channel_id, // 频道
-        begin_pubdate: this.formData.dateRange.length ? this.formData.dateRange[0] : null, // 起始时间
-        end_pubdate: this.formData.dateRange.length > 1 ? this.formData.dateRange[1] : null // 截止时间
+        begin_pubdate: this.formData.dateRange.length
+          ? this.formData.dateRange[0]
+          : null, // 起始时间
+        end_pubdate:
+          this.formData.dateRange.length > 1 ? this.formData.dateRange[1] : null // 截止时间
       }
       this.getArticles(params) // 调用获取文章数据
     },
@@ -237,14 +283,17 @@ export default {
     //     this.list = result.data.results // 接受文章列表数据
     //   })
     // },
-    getArticles (params) { // 完成 分页切换/条件切换
+    getArticles (params) {
+      // 完成 分页切换/条件切换
       this.$axios({
         url: '/articles', // 请求地址
         // url: '/articles', // 请求地址
         params
       }).then(result => {
-        this.list = result.data.results// 接收文章列表数据
+        console.log(result)
+        this.list = result.data.results // 接收文章列表数据
         this.page.total = result.data.total_count // 文章总数
+        console.log(this.page.total)
       })
     },
 
@@ -259,7 +308,7 @@ export default {
   },
   created () {
     this.getChannels() // 调用获取频道数据
-    this.getArticles() // 调用获取文章列表
+    this.getArticles({ page: 1, per_page: 10 }) // 调用获取文章列表
   }
 }
 </script>
@@ -301,6 +350,7 @@ export default {
     span {
       margin-left: 10px;
       font-size: 14px;
+      cursor: pointer;
     }
   }
 }

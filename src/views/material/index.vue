@@ -93,7 +93,7 @@ export default {
           url: `/user/images/${id}`,
           method: 'delete'
         }).then(() => {
-          this.getALLMaterial()
+          this.getALLMaterial()// 重新加载数据
         })
       })
     },
