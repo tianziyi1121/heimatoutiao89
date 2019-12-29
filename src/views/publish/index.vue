@@ -15,7 +15,7 @@
         <el-input v-model="formData.title" style="width:60%"></el-input>
       </el-form-item>
       <el-form-item prop="content" label="内容">
-        <el-input v-model="formData.content" type="textarea" :rows="4"></el-input>
+        <quill-editor style="height:400px" v-model="formData.content" type="textarea" :rows="4"></quill-editor>
       </el-form-item>
       <el-form-item prop="type" label="封面" style="margin-top:140px">
         <!-- //绑定封面得类型  //@change="changeType"-->
