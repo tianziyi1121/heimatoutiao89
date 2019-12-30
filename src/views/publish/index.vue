@@ -15,7 +15,7 @@
         <el-input v-model="formData.title" style="width:60%"></el-input>
       </el-form-item>
       <el-form-item prop="content" label="内容">
-        <quill-editor style="height:400px" v-model="formData.content" type="textarea" :rows="4"></quill-editor>
+        <quill-editor style="height:400px" v-model="formData.content" :rows="4"></quill-editor>
       </el-form-item>
       <el-form-item prop="type" label="封面" style="margin-top:140px">
         <!-- //绑定封面得类型  //@change="changeType"-->
@@ -25,11 +25,13 @@
           <el-radio :label="0">无图</el-radio>
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
+        <!-- 放置一个封面组件 -->
+        <cover-image></cover-image>
       </el-form-item>
       <!-- 放置一个封面组件  父组件  => 子组件 props @clickOneImg="receiveImg"-->
-      <!-- <cover-image  @clickOneImg="receiveImg" :list="formData.cover.images"></cover-image> -->
+      <cover-image  @clickOneImg="receiveImg" :list="formData.cover.images"></cover-image>
       <el-form-item prop="channel_id" label="频道">
-        <el-select v-model="formData.channel_id" >
+        <el-select v-model="formData.channel_id">
           <!-- 循环生成多个el-option  label指的是 el-option的显示值 value指的是 el-option的存储值 -->
           <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -68,21 +70,11 @@ export default {
       }
     }
   },
-  // 'formData.cover.type': function () {
-  //   //  this指向组件实例
-  //   if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
-  //     // 无图或者自动模式
-  //     this.formData.cover.images = []
-  //   } else if (this.formData.cover.type === 1) {
-  //     this.formData.cover.images = [''] // 单图模式
-  //   } else if (this.formData.cover.type === 3) {
-  //     this.formData.cover.images = ['', '', ''] // 单图模式
-  //   }
-  // }
   watch: {
     $route: function (to, from) {
       if (Object.keys(to.params).length) {
         // 有参数 就 修改
+        this.getChannels(to.params.articleId) // 重新拉去数据
       } else {
         // 没有参数 就发布
         this.formData = {
@@ -95,11 +87,43 @@ export default {
         }
       }
     }
+    // // 监控嵌套对象中得值
+    // 'formData.cover.type': function () {
+    // //  this指向组件实例
+    //   if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+    //   // 无图或者自动模式
+    //     this.formData.cover.images = []
+    //   } else if (this.formData.cover.type === 1) {
+    //     this.formData.cover.images = [''] // 单图模式
+    //   } else if (this.formData.cover.type === 3) {
+    //     this.formData.cover.images = ['', '', ''] // 单图模式
+    //   }
+    // }
 
   },
   methods: {
-    receiveImg () {},
-    changeType () {},
+    receiveImg (img, index) {
+      // 接受到数据之后 修改 images数组 但是images是个数组['','','']
+      // 有地址 有索引 能不能改image
+      // this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+      //   if (i === index) {
+      //     return img
+      //   } return item
+      // })   这个是低版本
+      // vue响应式原理 响应式数据  数据发生变化 视图变化
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? img : item)
+    },
+    // 切换类型时触发  该方法 只有点击切换时才会触发
+    changeType () {
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        // 无图或者自动模式
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = [''] // 单图模式
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', ''] // 单图模式
+      }
+    },
     // 获取文章详情通过id
     getArticleById (articleId) {
       this.$axios({
